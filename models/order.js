@@ -12,6 +12,15 @@ Order.init({
   dt_scheduled: {
     type: Sequelize.DATE,
   },
+  location: {
+    type: Sequelize.STRING,
+  },
+  serviceProvider: {
+    type: Sequelize.INTEGER,
+  },
+  buffer: {
+    type: Sequelize.INTEGER,
+  },
   createdAt: {
     allowNull: false,
     type: Sequelize.DATE,
