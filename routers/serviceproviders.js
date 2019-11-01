@@ -7,7 +7,7 @@ const createServiceProviderRouter = () => {
   const router = Router();
   // router.use(requireAuth);
   router.get('/', asyncify(async (req, res) => {
-    const providers = ServiceProvider.findAll();
+    const providers = await ServiceProvider.findAll();
     return res.json(providers);
   }));
   return router;
