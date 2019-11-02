@@ -59,7 +59,7 @@ const createProfileRouter = () => {
       id: participant.id,
       email: participant.email,
       lastOrder,
-      group: group.name,
+      group: group && group.name,
       costCode: group && group.costCode,
       dietaryRequirements: participant.dietaryRequirements,
       orders: getOrdersStatus(orders),
