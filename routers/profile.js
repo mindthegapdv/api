@@ -38,7 +38,7 @@ const serializeParticipantOrder = (order, orderParticipant) => ({
   location: order.location,
   menuDescription: order.menuDescription,
   dt_scheduled: order.dt_scheduled,
-  name: order.name
+  name: order.name,
 });
 
 const getOrdersStatus = (orders) => orders
@@ -52,7 +52,7 @@ const createProfileRouter = () => {
     if (!participant) {
       throw Unauthorized();
     }
-    const group = await Group.findOne({ where: { id: participant.group } })
+    const group = await Group.findOne({ where: { id: participant.group } });
     const orders = await participant.getOrders();
     const lastOrder = null;
     const profile = {

@@ -15,6 +15,10 @@ const orderSchema = Joi.object().keys({
   participants: Joi.array().items(Joi.number()),
 });
 
+const addParticipantSchema = Joi.object().keys({
+  participants: Joi.array().items(Joi.number()).required(),
+});
+
 const updateOrderSchema = Joi.object().keys({
   menuDescription: Joi.string(),
   name: Joi.string().required(),
@@ -24,6 +28,13 @@ const updateOrderSchema = Joi.object().keys({
   buffer: Joi.number(),
   participants: Joi.array().items(Joi.number()),
   status: Joi.string().valid(...validStatus),
+});
+
+const serializeOrderParticipant = (participant) => ({
+  id: participant.id,
+  email: participant.email,
+  dietaryRequirements: participant.dietaryRequirements,
+  status: participant.OrderParticipants.status,
 });
 
 const createOrderRouter = () => {
@@ -66,12 +77,30 @@ const createOrderRouter = () => {
       res.json(result);
     }));
 
+  router.post('/:orderId/participants',
+    celebrate({
+      body: addParticipantSchema,
+    }),
+    asyncify(async (req, res) => {
+      const order = await Order.findOne({ where: { id: req.params.orderId } });
+      if (!order) {
+        throw NotFound();
+      }
+      const result = await order.addParticipants(req.body.participants, { through: { status: 0 } });
+      res.json(result);
+    }));
+
   router.get('/:orderId', asyncify(async (req, res) => {
     const order = await Order.findOne({ where: { id: req.params.orderId } });
     if (!order) {
       throw NotFound();
     }
-    res.send(order);
+    const participants = await order.getParticipants();
+    const result = {
+      ...order.dataValues,
+      participants: participants.map((p) => serializeOrderParticipant(p)),
+    };
+    res.send(result);
   }));
   return router;
 };
