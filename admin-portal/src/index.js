@@ -6,6 +6,7 @@ import { Auth0Provider } from 'auth'
 import theme from './theme'
 import { App } from './components'
 import * as serviceWorker from './serviceWorker'
+import "antd/dist/antd.css"
 
 const GlobalStyle = createGlobalStyle`
   body {
