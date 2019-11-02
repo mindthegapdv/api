@@ -6,15 +6,21 @@ const { asyncify } = require('../utils');
 const { Order, validStatus } = require('../models/order');
 
 const orderSchema = Joi.object().keys({
-  menuDescription: Joi.string().required(),
+  menuDescription: Joi.string(),
   dt_scheduled: Joi.date().iso().required(),
-  location: Joi.string().required(),
-  serviceProvider: Joi.number().required(),
+  location: Joi.string(),
+  serviceProvider: Joi.number(),
   buffer: Joi.number(),
   participants: Joi.array().items(Joi.number()),
 });
 
 const updateOrderSchema = Joi.object().keys({
+  menuDescription: Joi.string(),
+  dt_scheduled: Joi.date().iso().required(),
+  location: Joi.string(),
+  serviceProvider: Joi.number(),
+  buffer: Joi.number(),
+  participants: Joi.array().items(Joi.number()),
   status: Joi.string().valid(...validStatus).required(),
 });
 
@@ -33,7 +39,9 @@ const createOrderRouter = () => {
       const order = await Order.build(rest);
       [order.status] = validStatus;
       const result = await order.save();
-      order.addParticipants(participants, { through: { status: 0 } });
+      if (participants) {
+        order.addParticipants(participants, { through: { status: 0 } });
+      }
       res.json(result);
     }));
 
@@ -48,6 +56,10 @@ const createOrderRouter = () => {
         throw NotFound();
       }
       order.status = req.body.status || order.status;
+      order.menuDescription = req.body.menuDescription || order.menuDescription;
+      order.buffer = req.body.buffer || order.buffer;
+      order.location = req.body.location || order.location;
+      order.serviceProvider = req.body.serviceProvider || order.serviceProvider;
       res.json(order);
     }));
 
