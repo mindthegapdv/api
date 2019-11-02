@@ -57,7 +57,7 @@ const createProfileRouter = () => {
       id: participant.id,
       email: participant.email,
       lastOrder,
-      dietaryRequirements: (participant.dietaryRequirements || '').split(','),
+      dietaryRequirements: participant.dietaryRequirements,
       orders: getOrdersStatus(orders),
     };
     res.send(profile);
