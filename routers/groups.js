@@ -19,7 +19,7 @@ const createGroupRouter = () => {
   const router = Router();
   // router.use(requireAuth);
   router.get('/', asyncify(async (req, res) => {
-    const providers = await Group.findAll();
+    const providers = await Group.findAll({ include: [{ model: Participant, as: 'participants' }] });
     return res.json(providers);
   }));
 
