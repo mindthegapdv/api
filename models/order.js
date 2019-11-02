@@ -41,7 +41,7 @@ OrderParticipants.init({
   status: Sequelize.INTEGER,
 }, { sequelize, timestamps: false, modelName: 'OrderParticipants' });
 
-Participant.belongsToMany(Order, { through: OrderParticipants, foreignKey: 'orderId' });
-Order.belongsToMany(Participant, { through: OrderParticipants, foreignKey: 'participantId' });
+Participant.belongsToMany(Order, { through: OrderParticipants, foreignKey: 'participantId' });
+Order.belongsToMany(Participant, { through: OrderParticipants, foreignKey: 'orderId' });
 
 module.exports = Order;

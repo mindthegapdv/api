@@ -29,6 +29,16 @@ const validateParticpantToken = (req, res, next) => {
   }
 };
 
+const getOrdersStatus = (orders) => orders
+  .filter((order) => order.OrderParticipants.status === 0)
+  .map((order) => ({
+    id: order.id,
+    status: order.OrderParticipants.status,
+    location: order.location,
+    menuDescription: order.menuDescription,
+    dt_scheduled: order.dt_scheduled,
+  }));
+
 const createProfileRouter = () => {
   const router = Router();
   router.get('/', validateParticpantToken, asyncify(async (req, res) => {
@@ -38,13 +48,12 @@ const createProfileRouter = () => {
     }
     const orders = await participant.getOrders();
     const lastOrder = null;
-    console.log(orders);
     const profile = {
       id: participant.id,
       email: participant.email,
       lastOrder,
       dietaryRequirements: (participant.dietaryRequirements || '').split(','),
-      orders: [],
+      orders: getOrdersStatus(orders),
     };
     res.send(profile);
   }));
