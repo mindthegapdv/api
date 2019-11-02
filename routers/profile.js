@@ -57,6 +57,23 @@ const createProfileRouter = () => {
     };
     res.send(profile);
   }));
+
+
+  // update orders
+  router.patch('/orders', validateParticpantToken, asyncify(async (req, res) => {
+    res.status(405).json({ status: 'coming soon' });
+  }));
+
+  // update order
+  router.patch('/orders/:orderId', validateParticpantToken, asyncify(async (req, res) => {
+    res.status(405).json({ status: 'coming soon' });
+  }));
+
+  // update dietary requirements
+  router.patch('/', validateParticpantToken, asyncify(async (req, res) => {
+    res.status(405).json({ status: 'coming soon' });
+  }));
+
   return router;
 };
 

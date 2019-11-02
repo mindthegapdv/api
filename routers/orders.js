@@ -3,7 +3,7 @@ const { celebrate, Joi } = require('celebrate');
 const { NotFound } = require('../errors');
 const { asyncify } = require('../utils');
 // const { requireAuth } = require('../middleware');
-const { Order } = require('../models/order');
+const Order = require('../models/order');
 
 const orderSchema = Joi.object().keys({
   menuDescription: Joi.string().required(),
@@ -11,6 +11,7 @@ const orderSchema = Joi.object().keys({
   location: Joi.string().required(),
   serviceProvider: Joi.number().required(),
   buffer: Joi.number(),
+  participants: Joi.array().items(Joi.number()),
 });
 
 
@@ -24,8 +25,10 @@ const createOrderRouter = () => {
   router.post('/', celebrate({
     body: orderSchema,
   }), asyncify(async (req, res) => {
-    const order = await Order.build(req.body);
+    const { participants, ...rest } = req.body;
+    const order = await Order.build(rest);
     const result = await order.save();
+    order.addParticipants(participants, { through: { status: 0 } });
     res.json(result);
   }));
 

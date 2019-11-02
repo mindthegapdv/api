@@ -18,9 +18,9 @@ app.use('/profile', createProfileRouter());
 
 app.get('/', asyncify(async (req, res) => res.json({ ok: true })));
 app.use((error, req, res, next) => { // eslint-disable-line no-unused-vars
-  console.log('ERROR', error.message);
+  console.log('ERROR', error.message || (error.joi && error.joi.details));
   const status = error.statusCode || 500;
-  res.status(status).json({ message: error.message });
+  res.status(status).json({ message: error.message || (error.joi && error.joi.details) });
 });
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
