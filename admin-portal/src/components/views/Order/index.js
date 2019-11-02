@@ -1,19 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import * as moment from 'moment';
 import { useRouter } from 'useRouter';
-import { getOrder, updateOrder } from 'api';
+import { getServiceProviders, getOrder, updateOrder } from 'api';
 import { Spin, Button, Typography } from 'antd'
-import { Input, TimePicker, DatePicker } from "antd";
+import { Table, Input, TimePicker, DatePicker } from "antd";
+import { Select } from 'antd';
+const { Option } = Select;
 const { Text, Title } = Typography;
+const { TextArea } = Input;
 
-const Section = ({ children, title }) => (
+const Section = ({ children, title, style }) => (
+
   <div>
     <span style={{ display: 'block', color: '#2D9CDB', fontSize: 15, marginBottom: 9 }}>{title}</span>
-    <div style={{ padding: 24, backgroundColor: '#fff', borderRadius: 8, marginBottom: 24 }}>
+    <div style={{ padding: 24, backgroundColor: '#fff', borderRadius: 8, marginBottom: 24, ...(style || {}) }}>
       {children}
     </div>
   </div>
 );
+
+const columns = [
+  {
+    title: 'Email',
+    dataIndex: 'email',
+    key: 'email',
+    render: (data, record) => {
+      return (<><span style={{ display: 'block' }}>{data}</span><span>{record.dietaryRequirements || ''}</span></>)
+    }
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+    align: 'right',
+    render: (data) => {
+      const value = {
+        0: 'Unconfirmed',
+        1: 'Confirmed',
+        [-1]: 'Declined',
+      }[data];
+
+      const color = {
+        1: '#18A268',
+        0: '#A0A0A0',
+        [-1]: '#A0A0A0',
+      }[data];
+      return (<span style={{ color, display: 'block', textAlign: 'right' }}>{value}</span>)
+    }
+  }
+]
 
 const LabelledInput = ({ children, label }) => (
   <div style={{ display: "inline-block", padding: 8 }}>
@@ -27,10 +62,17 @@ export const Order = () => {
   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState(null);
 
+  const [serviceProvidersLoading, setServiceProvidersLoading] = useState(true);
+  const [serviceProviders, setServiceProviders] = useState([]);
+
   useEffect(() => {
     getOrder(match.params.orderId).then(order => {
       setOrder(order);
       setLoading(false);
+    })
+    getServiceProviders().then(providers => {
+      setServiceProviders(providers);
+      setServiceProvidersLoading(false);
     })
   }, [match.params.orderId]);
 
@@ -91,10 +133,33 @@ export const Order = () => {
           <Input name="location" placeholder="Location" value={order.location} onChange={updateLocation} />
         </LabelledInput>
       </Section>
-      <Section title="Who’s eating?" />
-      <Section title="Whats on the menu?" />
-      <Section title="Who might eat?" />
-      <Section title="Order from" />
+      <Section title="Who’s eating?">
+        <Table showHeader={true} dataSource={order.participants || []} columns={columns} pagination={false} />
+      </Section>
+      <Section title="Whats on the menu?">
+        <TextArea value={order.menuDescription} rows={4} onChange={(e) => setOrder({ ...order, menuDescription: e.target.value })} />
+      </Section>
+      <Section title="Who might eat?" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div>
+          <span style={{ fontSize: '18px', color: '#444', display: 'block' }}>SmartPredict</span>
+          <span>Recommendation based on your historical waste</span>
+        </div>
+        <div>
+          <Input value={order.buffer} onChange={(e) => setOrder({ ...order, buffer: e.target.value })}/> people
+        </div>
+      </Section>
+      <Section title="Order from" style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <span style={{ display: 'block', color: '#444444', fontWeight: 'bold' }}>Service provider</span>
+          <Select loading={serviceProvidersLoading} defaultValue={order.serviceProvider} style={{ width: '100%' }} onChange={(value) => setOrder({ ...order, serviceProvider: value })}>
+            {serviceProviders.map(s => <Option value={s.id}>{s.name}</Option>)}
+          </Select>
+        </div>
+        <div>
+          <span style={{ display: 'block', color: '#444444', fontWeight: 'bold' }}>Estimated cost p.p.</span>
+          <span style={{ fontSize: 18, color: '#444' }}>18.00pp</span>
+        </div>
+      </Section>
     </div>
   );
 }

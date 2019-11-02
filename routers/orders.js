@@ -4,6 +4,7 @@ const { NotFound } = require('../errors');
 const { asyncify } = require('../utils');
 // const { requireAuth } = require('../middleware');
 const { Order, validStatus } = require('../models/order');
+const { Group } = require('../models/groups');
 
 const orderSchema = Joi.object().keys({
   menuDescription: Joi.string(),
@@ -35,6 +36,8 @@ const serializeOrderParticipant = (participant) => ({
   email: participant.email,
   dietaryRequirements: participant.dietaryRequirements,
   status: participant.OrderParticipants.status,
+  groupName: participant.Group && participant.Group.name,
+  groupCostCode: participant.Group && participant.Group.costCode,
 });
 
 const createOrderRouter = () => {
@@ -95,10 +98,16 @@ const createOrderRouter = () => {
     if (!order) {
       throw NotFound();
     }
-    const participants = await order.getParticipants();
+    const participants = await order
+      .getParticipants({ include: [{ model: Group }] })
+      .map((p) => serializeOrderParticipant(p));
     const result = {
       ...order.dataValues,
-      participants: participants.map((p) => serializeOrderParticipant(p)),
+      participants,
+      stats: {
+        subTotal: participants.filter((p) => p.status === 1).length,
+        grandTotal: participants.filter((p) => p.status === 1).length + (order.buffer || 0),
+      },
     };
     res.send(result);
   }));

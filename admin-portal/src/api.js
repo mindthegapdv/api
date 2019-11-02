@@ -44,3 +44,7 @@ export const createOrder = (payload) => {
 export const updateOrder = (id, payload) => {
   return axios.patch(`/orders/${id}`, payload).then(response => response.data);
 }
+
+export const getServiceProviders = () => {
+  return axios.get('/service-providers').then(response => response.data);
+}
