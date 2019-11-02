@@ -4,7 +4,8 @@ import { Row, Col } from 'antd'
 import Order from './Order'
 
 const Orders = styled(Col)`
-  padding: 30px 20px;
+  padding: 30px 20px !important;
+  color: ${props => props.theme.colors.primaryBlue};
 `
 
 const TitleSection = styled(Row)`
@@ -17,11 +18,11 @@ const Day = styled.h4`
 
 `
 
-export default ({ orders }) => (
+export default ({ orders, user }) => (
   <Orders xs={24}>
     <TitleSection>Your orders for the next 7 days</TitleSection>
     {orders.map(order => (
-      <Order key={order.id} order={order}/>
+      <Order key={order.id} order={order} user={user}/>
     ))}
-  </Orders>  
+  </Orders>
 )
