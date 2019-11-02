@@ -44,7 +44,7 @@ const createGroupRouter = () => {
     if (!group) {
       throw NotFound();
     }
-    const participants = await Participant.findAll({ where: { groupId: group.id } });
+    const participants = await Participant.findAll({ where: { group: group.id } });
     res.send(participants);
   }));
 
@@ -55,7 +55,7 @@ const createGroupRouter = () => {
     if (!group) {
       throw NotFound();
     }
-    const participant = await Participant.build({ ...req.body, groupId: group.id });
+    const participant = await Participant.build({ ...req.body, group: group.id });
     const result = await participant.save();
     res.json(result);
   }));

@@ -14,6 +14,9 @@ const orderSchema = Joi.object().keys({
   participants: Joi.array().items(Joi.number()),
 });
 
+const updateOrderSchema = Joi.object().keys({
+  status: Joi.string().valid(...validStatus).required(),
+});
 
 const createOrderRouter = () => {
   const router = Router();
@@ -22,21 +25,31 @@ const createOrderRouter = () => {
     res.send(orders);
   }));
 
-  router.post('/', celebrate({
-    body: orderSchema,
-  }), asyncify(async (req, res) => {
-    const { participants, ...rest } = req.body;
-    const order = await Order.build(rest);
-    [order.status] = validStatus;
-    const result = await order.save();
-    order.addParticipants(participants, { through: { status: 0 } });
-    res.json(result);
-  }));
+  router.post('/',
+    celebrate({
+      body: orderSchema,
+    }), asyncify(async (req, res) => {
+      const { participants, ...rest } = req.body;
+      const order = await Order.build(rest);
+      [order.status] = validStatus;
+      const result = await order.save();
+      order.addParticipants(participants, { through: { status: 0 } });
+      res.json(result);
+    }));
 
   // update an order
-  router.patch('/:orderId', asyncify(async (req, res) => {
-    res.status(405).json({ status: 'coming soon' });
-  }));
+  router.patch('/:orderId',
+    celebrate({
+      body: updateOrderSchema,
+    }),
+    asyncify(async (req, res) => {
+      const order = await Order.findOne({ where: { id: req.params.orderId } });
+      if (!order) {
+        throw NotFound();
+      }
+      order.status = req.body.status || order.status;
+      res.json(order);
+    }));
 
   router.get('/:orderId', asyncify(async (req, res) => {
     const order = await Order.findOne({ where: { id: req.params.orderId } });
