@@ -62,7 +62,8 @@ const createOrderRouter = () => {
       order.buffer = req.body.buffer || order.buffer;
       order.location = req.body.location || order.location;
       order.serviceProvider = req.body.serviceProvider || order.serviceProvider;
-      res.json(order);
+      const result = await order.save();
+      res.json(result);
     }));
 
   router.get('/:orderId', asyncify(async (req, res) => {
