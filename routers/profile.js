@@ -2,7 +2,6 @@ const { Router } = require('express');
 const jwt = require('jsonwebtoken');
 const { Unauthorized } = require('../errors');
 const { asyncify } = require('../utils');
-const Order = require('../models/order');
 const { Participant } = require('../models/groups');
 
 const SECRET_KEY = process.env.SECRET_KEY || 'thisisnotsecret';
@@ -38,10 +37,12 @@ const createProfileRouter = () => {
       throw Unauthorized();
     }
     const orders = await participant.getOrders();
+    const lastOrder = null;
     console.log(orders);
     const profile = {
       id: participant.id,
       email: participant.email,
+      lastOrder,
       dietaryRequirements: (participant.dietaryRequirements || '').split(','),
       orders: [],
     };
