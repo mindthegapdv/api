@@ -2,7 +2,7 @@ const { Router } = require('express');
 const jwt = require('jsonwebtoken');
 const { NotFound, Unauthorized } = require('../errors');
 const { asyncify } = require('../utils');
-const { Participant } = require('../models/groups');
+const { Participant, Group } = require('../models/groups');
 const { Order, OrderParticipant } = require('../models/order');
 
 const SECRET_KEY = process.env.SECRET_KEY || 'thisisnotsecret';
@@ -38,6 +38,7 @@ const serializeParticipantOrder = (order, orderParticipant) => ({
   location: order.location,
   menuDescription: order.menuDescription,
   dt_scheduled: order.dt_scheduled,
+  name: order.name
 });
 
 const getOrdersStatus = (orders) => orders
@@ -51,12 +52,15 @@ const createProfileRouter = () => {
     if (!participant) {
       throw Unauthorized();
     }
+    const group = await Group.findOne({ where: { id: participant.group } })
     const orders = await participant.getOrders();
     const lastOrder = null;
     const profile = {
       id: participant.id,
       email: participant.email,
       lastOrder,
+      group: group.name,
+      costCode: group && group.costCode,
       dietaryRequirements: participant.dietaryRequirements,
       orders: getOrdersStatus(orders),
     };

@@ -7,6 +7,7 @@ const Banner = styled(Col)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 30px;
 `
 
 const Logo = styled.img`
