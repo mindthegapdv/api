@@ -40,14 +40,22 @@ const createGroupRouter = () => {
   }));
 
   router.get('/:groupId/participants', asyncify(async (req, res) => {
-    const participants = await Participant.findAll({ where: { groupId: req.params.groupId } });
+    const group = await Group.findOne({ where: { id: req.params.groupId } });
+    if (!group) {
+      throw NotFound();
+    }
+    const participants = await Participant.findAll({ where: { groupId: group.id } });
     res.send(participants);
   }));
 
   router.post('/:groupId/participants', celebrate({
     body: participantSchema,
   }), asyncify(async (req, res) => {
-    const participant = await Participant.build({ ...req.body, groupId: req.params.groupId });
+    const group = await Group.findOne({ where: { id: req.params.groupId } });
+    if (!group) {
+      throw NotFound();
+    }
+    const participant = await Participant.build({ ...req.body, groupId: group.id });
     const result = await participant.save();
     res.json(result);
   }));

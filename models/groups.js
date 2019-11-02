@@ -53,7 +53,8 @@ Group.init({
   },
 }, { sequelize, modelName: 'Group' });
 
-Participant.belongsTo(Group);
-Group.hasMany(Participant);
+Participant.belongsTo(Group, {
+  foreignKey: 'group',
+});
 
 module.exports = { Participant, Group };
