@@ -9,7 +9,7 @@ export const useToken = () => {
   useEffect(() => {
     const { token } = queryString.parse(router.location.search)
     setToken(token)
-  }, [location])
+  }, [router.location])
 
   return token
 }
