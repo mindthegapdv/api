@@ -40,6 +40,7 @@ const createProfileRouter = () => {
     const orders = await Order.findAll();
     const profile = {
       id: participant.id,
+      email: participant.email,
       dietaryRequirements: (participant.dietaryRequirements || '').split(','),
       orders: [],
     };
