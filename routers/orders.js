@@ -3,7 +3,7 @@ const { celebrate, Joi } = require('celebrate');
 const { NotFound } = require('../errors');
 const { asyncify } = require('../utils');
 // const { requireAuth } = require('../middleware');
-const Order = require('../models/order');
+const { Order, validStatus } = require('../models/order');
 
 const orderSchema = Joi.object().keys({
   menuDescription: Joi.string().required(),
@@ -27,9 +27,15 @@ const createOrderRouter = () => {
   }), asyncify(async (req, res) => {
     const { participants, ...rest } = req.body;
     const order = await Order.build(rest);
+    [order.status] = validStatus;
     const result = await order.save();
     order.addParticipants(participants, { through: { status: 0 } });
     res.json(result);
+  }));
+
+  // update an order
+  router.patch('/:orderId', asyncify(async (req, res) => {
+    res.status(405).json({ status: 'coming soon' });
   }));
 
   router.get('/:orderId', asyncify(async (req, res) => {

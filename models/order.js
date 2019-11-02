@@ -20,6 +20,9 @@ Order.init({
   serviceProvider: {
     type: Sequelize.INTEGER,
   },
+  status: {
+    type: Sequelize.STRING,
+  },
   menuDescription: {
     type: Sequelize.STRING,
   },
@@ -36,12 +39,15 @@ Order.init({
   },
 }, { sequelize, modelName: 'Order' });
 
-class OrderParticipants extends Model {}
-OrderParticipants.init({
+const validStatus = ['Open To Join', 'Order Placed', 'Preparing', 'Ready To Eat', 'Feedback', 'Closed'];
+
+class OrderParticipant extends Model {}
+OrderParticipant.init({
   status: Sequelize.INTEGER,
+  feedback: Sequelize.INTEGER,
 }, { sequelize, timestamps: false, modelName: 'OrderParticipants' });
 
-Participant.belongsToMany(Order, { through: OrderParticipants, foreignKey: 'participantId' });
-Order.belongsToMany(Participant, { through: OrderParticipants, foreignKey: 'orderId' });
+Participant.belongsToMany(Order, { through: OrderParticipant, foreignKey: 'participantId' });
+Order.belongsToMany(Participant, { through: OrderParticipant, foreignKey: 'orderId' });
 
-module.exports = Order;
+module.exports = { validStatus, Order, OrderParticipant };

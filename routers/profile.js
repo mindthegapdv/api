@@ -1,8 +1,9 @@
 const { Router } = require('express');
 const jwt = require('jsonwebtoken');
-const { Unauthorized } = require('../errors');
+const { NotFound, Unauthorized } = require('../errors');
 const { asyncify } = require('../utils');
 const { Participant } = require('../models/groups');
+const { Order, OrderParticipant } = require('../models/order');
 
 const SECRET_KEY = process.env.SECRET_KEY || 'thisisnotsecret';
 
@@ -29,15 +30,19 @@ const validateParticpantToken = (req, res, next) => {
   }
 };
 
+const serializeParticipantOrder = (order, orderParticipant) => ({
+  id: order.id,
+  status: orderParticipant.status,
+  feedback: orderParticipant.feedback,
+  orderStatus: order.status,
+  location: order.location,
+  menuDescription: order.menuDescription,
+  dt_scheduled: order.dt_scheduled,
+});
+
 const getOrdersStatus = (orders) => orders
   .filter((order) => order.OrderParticipants.status === 0)
-  .map((order) => ({
-    id: order.id,
-    status: order.OrderParticipants.status,
-    location: order.location,
-    menuDescription: order.menuDescription,
-    dt_scheduled: order.dt_scheduled,
-  }));
+  .map((order) => serializeParticipantOrder(order, order.OrderParticipants));
 
 const createProfileRouter = () => {
   const router = Router();
@@ -58,15 +63,28 @@ const createProfileRouter = () => {
     res.send(profile);
   }));
 
-
-  // update orders
-  router.patch('/orders', validateParticpantToken, asyncify(async (req, res) => {
-    res.status(405).json({ status: 'coming soon' });
-  }));
-
   // update order
   router.patch('/orders/:orderId', validateParticpantToken, asyncify(async (req, res) => {
-    res.status(405).json({ status: 'coming soon' });
+    const orderParticipant = await OrderParticipant.findOne({
+      where: {
+        orderId: req.params.orderId,
+        participantId: req.decoded.id,
+      },
+    });
+    if (!orderParticipant) {
+      throw NotFound();
+    }
+    const order = await Order.findOne({ where: { id: req.params.orderId } });
+    if (!order) {
+      throw NotFound();
+    }
+    if (order.status === 'Feedback') {
+      orderParticipant.feedback = req.body.feedback || orderParticipant.feedback;
+    } else if (order.status === 'Open To Join') {
+      orderParticipant.status = req.body.status || orderParticipant.status;
+    }
+    await orderParticipant.save();
+    res.status(405).json(serializeParticipantOrder(order, orderParticipant));
   }));
 
   // update dietary requirements
