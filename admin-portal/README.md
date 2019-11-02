@@ -1,4 +1,4 @@
-# Initilisinig
+# Initilising
 Clone the repo
 Install dependencies using `yarn install`
 add an `.env` file with the following config:
