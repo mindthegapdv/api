@@ -7,6 +7,7 @@ const { Order, validStatus } = require('../models/order');
 
 const orderSchema = Joi.object().keys({
   menuDescription: Joi.string(),
+  name: Joi.string().required(),
   dt_scheduled: Joi.date().iso().required(),
   location: Joi.string(),
   serviceProvider: Joi.number(),
@@ -16,6 +17,7 @@ const orderSchema = Joi.object().keys({
 
 const updateOrderSchema = Joi.object().keys({
   menuDescription: Joi.string(),
+  name: Joi.string().required(),
   dt_scheduled: Joi.date().iso().required(),
   location: Joi.string(),
   serviceProvider: Joi.number(),
