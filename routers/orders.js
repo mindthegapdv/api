@@ -21,7 +21,7 @@ const updateOrderSchema = Joi.object().keys({
 const createOrderRouter = () => {
   const router = Router();
   router.get('/', asyncify(async (req, res) => {
-    const orders = Order.findAll();
+    const orders = await Order.findAll();
     res.send(orders);
   }));
 
