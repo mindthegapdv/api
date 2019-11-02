@@ -23,6 +23,7 @@ const updateOrderSchema = Joi.object().keys({
   serviceProvider: Joi.number(),
   buffer: Joi.number(),
   participants: Joi.array().items(Joi.number()),
+  status: Joi.string().valid(...validStatus),
 });
 
 const createOrderRouter = () => {
