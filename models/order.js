@@ -18,6 +18,9 @@ Order.init({
   serviceProvider: {
     type: Sequelize.INTEGER,
   },
+  menuDescription: {
+    type: Sequelize.STRING,
+  },
   buffer: {
     type: Sequelize.INTEGER,
   },

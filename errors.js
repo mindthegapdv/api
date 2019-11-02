@@ -4,4 +4,10 @@ const NotFound = () => {
   return err;
 };
 
-module.exports = { NotFound };
+const Unauthorized = () => {
+  const err = Error('Unauthorized');
+  err.statusCode = 401;
+  return err;
+};
+
+module.exports = { NotFound, Unauthorized };
