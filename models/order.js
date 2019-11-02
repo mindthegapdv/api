@@ -1,5 +1,7 @@
+/* eslint-disable max-classes-per-file */
 const { Sequelize, Model } = require('sequelize');
 const { sequelize } = require('./index');
+const { Participant } = require('./groups');
 
 class Order extends Model {}
 Order.init({
@@ -33,5 +35,13 @@ Order.init({
     type: Sequelize.DATE,
   },
 }, { sequelize, modelName: 'Order' });
+
+class OrderParticipants extends Model {}
+OrderParticipants.init({
+  status: Sequelize.INTEGER,
+}, { sequelize, timestamps: false, modelName: 'OrderParticipants' });
+
+Participant.belongsToMany(Order, { through: OrderParticipants, foreignKey: 'orderId' });
+Order.belongsToMany(Participant, { through: OrderParticipants, foreignKey: 'participantId' });
 
 module.exports = Order;

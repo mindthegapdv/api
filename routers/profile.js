@@ -37,7 +37,8 @@ const createProfileRouter = () => {
     if (!participant) {
       throw Unauthorized();
     }
-    const orders = await Order.findAll();
+    const orders = await participant.getOrders();
+    console.log(orders);
     const profile = {
       id: participant.id,
       email: participant.email,

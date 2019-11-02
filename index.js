@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const { asyncify } = require('./utils');
 const { createServiceProviderRouter } = require('./routers/serviceproviders');
 const { createGroupRouter } = require('./routers/groups');
@@ -8,6 +9,7 @@ const { createProfileRouter } = require('./routers/profile');
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use('/service-providers', createServiceProviderRouter());
 app.use('/groups', createGroupRouter());
