@@ -26,6 +26,9 @@ Order.init({
   menuDescription: {
     type: Sequelize.STRING,
   },
+  name: {
+    type: Sequelize.STRING,
+  },
   buffer: {
     type: Sequelize.INTEGER,
   },
