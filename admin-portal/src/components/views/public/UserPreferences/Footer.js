@@ -6,6 +6,7 @@ import logoPath from 'assets/images/logo-footer.png'
 const Footer = styled(Col)`
   background-color: ${props => props.theme.colors.ligthGrey};
   padding: 24px !important;
+  font-family: "Nunito";
 `
 
 const TopRow = styled(Row)`
@@ -13,11 +14,12 @@ const TopRow = styled(Row)`
 `
 
 const CompanyName = styled.h5`
-  font-size: 14px;
+  font-size: 16px;
+  margin-bottom: 0px;
 `
 
 const Address = styled.p`
-  font-size: 12px;
+  font-size: 14px;
   opacity: .5;
 `
 
@@ -26,7 +28,7 @@ const Logo = styled.img`
 `
 
 const Link = styled.p`
-  font-size: 12px;
+  font-size: 14px;
   text-decoration: underline;
   margin-bottom: 5px;
 `
@@ -35,14 +37,14 @@ export default () => (
   <Footer xs={24}>
     <TopRow type='flex' justify='space-between'>
       <Col xs={21}>
-        <CompanyName>Need 2 Feed</CompanyName>
+        <CompanyName>need2feed</CompanyName>
         <Address>10 Hudson Yards, NY, 10001</Address>
       </Col>
       <Col xs={3}>
         <Logo src={logoPath} />
       </Col>
     </TopRow>
-    <Link>Contact us</Link>
-    <Link>Data privacy</Link>
+    {/* <Link>Contact us</Link>
+    <Link>Data privacy</Link> */}
   </Footer>
 )

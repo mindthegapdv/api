@@ -12,6 +12,7 @@ const TitleSection = styled(Row)`
   border-bottom: 1px solid ${props => props.theme.colors.lightGrey};
   padding-bottom: 10px;
   font-size: 14px;
+  font-family: "Nunito"
 `
 
 const Day = styled.h4`
