@@ -105,7 +105,7 @@ export const Order = () => {
     setLoading(true);
     const { id, ...rest } = order;
     const updates= Object.keys(rest).reduce((result, key) => {
-      if (rest[key] && ['createdAt', 'updatedAt', 'stats'].indexOf(key) === -1) {
+      if (rest[key] && ['createdAt', 'updatedAt', 'stats', 'participants'].indexOf(key) === -1) {
         return { ...result, [key]: rest[key] };
       }
       return result;
