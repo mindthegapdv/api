@@ -4,15 +4,21 @@ import { Col } from 'antd'
 import { updateDietaryRequirements } from 'api'
 import { useToken } from 'hooks'
 
-const DietaryRequirements = styled(Col)`
+
+const DietaryRequirementsContainer = styled.div`
   background-color: ${props => props.theme.colors.primaryBlue};
+  width: 100%;
+`;
+
+const DietaryRequirements = styled.div`
+  
   padding: 2em;
   /* margin: 20px !important; */
   max-width: 450px;
   display: block;
   margin: auto;
-  width: 100%;
-`
+`;
+
 
 const H3 = styled.h3`
   font-family: "Nunito";
@@ -64,11 +70,20 @@ export default ({ location, user }) => {
   const handleUpdateRequirements = () => updateDietaryRequirements(token, requirements)
 
   return (
-    <DietaryRequirements >
-      <H3>Your dietary requirements</H3>
-      <Email>{email}</Email>
-      <TextArea rows={5} placeholder='Vegetarian, Halal, Kosher, Allergies...' value={requirements} onChange={handleRequirementsChange}/>
-      <UpdateButton onClick={handleUpdateRequirements}>Update dietary requirements</UpdateButton>
-    </DietaryRequirements>
-  )
+    <DietaryRequirementsContainer>
+      <DietaryRequirements>
+        <H3>Your dietary requirements</H3>
+        <Email>{email}</Email>
+        <TextArea
+          rows={5}
+          placeholder="Vegetarian, Halal, Kosher, Allergies..."
+          value={requirements}
+          onChange={handleRequirementsChange}
+        />
+        <UpdateButton onClick={handleUpdateRequirements}>
+          Update dietary requirements
+        </UpdateButton>
+      </DietaryRequirements>
+    </DietaryRequirementsContainer>
+  );
 }

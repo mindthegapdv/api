@@ -5,22 +5,22 @@ import dislikePath from 'assets/images/dislike.png'
 import likePath from 'assets/images/like.png'
 import { sendLastOrderFeedback } from 'api'
 
-const FeedbackContainer = styled(Col)`
-  /* margin: 30px 0; */
-  /* padding: 0 15px; */
-`
+const FeedbackContainer = styled.div`
+  display: block;
+  margin: auto !important;
+  max-width: 450px;
+  width: 100%;
+`;
 
 const Feedback = styled.div`
   display: flex;
-  max-width: 400px;
-  margin: auto;
   padding: 2em;
+  margin: 20px !important;
   flex-direction: column;
   align-items: center;
   background-color: ${props => props.theme.colors.primaryBlue};
   border-radius: 6px;
-  margin: 20px !important;
-`
+`;
 
 const H3 = styled.h3`
   font-family: 'Nunito';
@@ -103,7 +103,7 @@ export default ({ order }) => {
         <FeedbackContainer xs={24}>
           <Feedback>
             <H3>How was your meal?</H3>
-            <Date>2nd November 2019</Date>
+            <Date>Yesterday, 2nd November 2019</Date>
             <Options type={'flex'}>
               <Option path={dislikePath} feedback={-1} />
               <Option path={likePath} feedback={1} />

@@ -9,7 +9,7 @@ const Banner = styled(Col)`
   align-items: center;
   padding: 20px !important;
   text-align: center;
-  max-width: 400px;
+  max-width: 450px;
   margin: auto;
 `;
 

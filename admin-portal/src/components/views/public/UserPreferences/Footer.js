@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import { Row, Col } from 'antd'
 import logoPath from 'assets/images/logo-footer.png'
 
-const Footer = styled(Col)`
-  background-color: ${props => props.theme.colors.ligthGrey};
+const Footer = styled.div`
+  width: 100%;
+  background-color: ${props => props.theme.colors.lightGrey};
   padding: 24px !important;
   font-family: "Nunito";
 `
@@ -34,7 +35,7 @@ const Link = styled.p`
 `
 
 export default () => (
-  <Footer xs={24}>
+  <Footer>
     <TopRow type='flex' justify='space-between'>
       <Col xs={21}>
         <CompanyName>need2feed</CompanyName>
