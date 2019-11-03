@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import styled from 'styled-components'
 import { Row, Col } from 'antd'
 import dislikePath from 'assets/images/dislike.png'
 import likePath from 'assets/images/like.png'
 import { updateOrderFeedback } from 'api'
 import { useToken } from 'hooks'
+import smilePath from 'assets/images/smile.png'
 
 const FeedbackContainer = styled.div`
   display: block;
@@ -72,11 +73,12 @@ const P = styled.span`
   text-decoration: underline;
 `;
 
-const Option = ({ path, feedback, orderId }) => {
+const Option = ({ path, feedback, orderId, setFeedbackGiven }) => {
   const token = useToken()
 
   const handleClick = () => {
     updateOrderFeedback(token, orderId, feedback)
+    setFeedbackGiven(true)
   }
 
   return (
@@ -91,54 +93,61 @@ const Option = ({ path, feedback, orderId }) => {
   )
 }
 
-const ThankYouCard = () => (
-  <FeedbackContainer>
-    <p>Thanks</p>
-  </FeedbackContainer>
-)
-//
-// const FeedbackCard = order => {
-//   return (
-//     {order.feedback === null ? (
-//       <ThankYouCard />
-//     ) : (
-//       <FeedbackContainer xs={24}>
-//         <Feedback>
-//           <H3>How was your meal?</H3>
-//           <Date>2nd November 2019</Date>
-//           <Options type={'flex'}>
-//             <Option path={dislikePath} feedback={-1} orderId={order.id} />
-//             <Option path={likePath} feedback={1} orderId={order.id} />
-//           </Options>
-//           <P onClick={() => handleClick(order.id, 0)}>I didn't eat</P>
-//         </Feedback>
-//       </FeedbackContainer>
-//     )}
-//   )
-// }
+const Smile = styled.img`
+  height: 30px;
+`
 
-export default ({ order }) => {
+const ThankH3 = styled.h3`
+  font-size: 18px;
+  color: white;
+  font-family: 'Nunito';
+  margin: 10px 0 0 0 !important;
+`
+
+const ThankP = styled.p`
+  font-size: 12px;
+  color: white;
+  opacity: .5;
+  font-family: 'Nunito';
+  margin: 0 !important;
+`
+
+const FeedbackCard = ({ order }) => {
+  const [feedbackGiven, setFeedbackGiven] = useState(false)
   const token = useToken()
 
   const handleClick = (orderId, feedback) => {
     updateOrderFeedback(token, orderId, feedback)
+    setFeedbackGiven(true)
   }
 
+  return feedbackGiven ? (
+      <FeedbackContainer>
+        <Feedback>
+          <Smile src={smilePath} />
+          <ThankH3>Thank you for your feedback</ThankH3>
+          <ThankP>We'll consider this for future orders</ThankP>
+        </Feedback>
+      </FeedbackContainer>
+    ) : (
+      <FeedbackContainer xs={24}>
+        <Feedback>
+          <H3>How was your meal?</H3>
+          <Date>Yesterday, 2nd November 2019</Date>
+          <Options type={'flex'}>
+            <Option path={dislikePath} feedback={-1} setFeedbackGiven={setFeedbackGiven} orderId={order.id} />
+            <Option path={likePath} feedback={1} setFeedbackGiven={setFeedbackGiven} orderId={order.id} />
+          </Options>
+          <P onClick={() => handleClick(order.id, 0)}>I didn't eat</P>
+        </Feedback>
+      </FeedbackContainer>
+    )
+}
+
+export default ({ order }) => {
   return (
     <Fragment>
-      {order &&
-        <FeedbackContainer xs={24}>
-          <Feedback>
-            <H3>How was your meal?</H3>
-            <Date>Yesterday, 2nd November 2019</Date>
-            <Options type={'flex'}>
-              <Option path={dislikePath} feedback={-1} />
-              <Option path={likePath} feedback={1} />
-            </Options>
-            <P onClick={() => handleClick(order.id, 0)}>I didn't eat</P>
-          </Feedback>
-        </FeedbackContainer>
-      }
+      {order && <FeedbackCard order={order}/>}
     </Fragment>
   )
 }
