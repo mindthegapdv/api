@@ -58,6 +58,7 @@ const Date = styled.p`
 
 const Day = styled.h4`
   font-size: 18px;
+  margin-bottom: 0px;
 `
 
 const ToggleContainer = styled.div`
