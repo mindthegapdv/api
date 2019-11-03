@@ -49,6 +49,15 @@ export const getServiceProviders = () => {
   return axios.get('/service-providers').then(response => response.data);
 }
 
+export const getGroups = () => {
+  return axios.get('/groups').then(response => response.data);
+}
+
+export const addParticipants = (orderId, participantIds) => {
+  return axios.post(`/orders/${orderId}/participants`, {
+    participants: participantIds
+  }).then(response => response.data);
+}
 export const updateOrderStatus = (token, orderId, status) => {
   const data = { status }
   return axios.patch(`/profile/orders/${orderId}`, data, setHeaders(token))

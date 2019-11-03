@@ -56,5 +56,9 @@ Group.init({
 Participant.belongsTo(Group, {
   foreignKey: 'group',
 });
+Group.hasMany(Participant, {
+  foreignKey: 'group',
+  as: 'participants',
+});
 
 module.exports = { Participant, Group };

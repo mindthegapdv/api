@@ -9,7 +9,6 @@ Participant.findAll().then((participants) => Promise.all(participants.map((parti
   const token = jwt.sign({ id: participant.id }, SECRET_KEY);
   const url = `https://need2feed.us/preferences?token=${token}`;
   return sendTemplate(participant.email, 'Set your preferences', { action_url: url }, 'remind');
-}))).then((results) => {
-  console.log(results);
+}))).then(() => {
   sequelize.close();
 });
