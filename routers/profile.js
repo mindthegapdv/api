@@ -1,5 +1,7 @@
 const { Router } = require('express');
+const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 const { NotFound, Unauthorized } = require('../errors');
 const { asyncify } = require('../utils');
 const { Participant, Group } = require('../models/groups');
@@ -52,12 +54,29 @@ const createProfileRouter = () => {
       throw Unauthorized();
     }
     const group = await Group.findOne({ where: { id: participant.group } });
-    const orders = await participant.getOrders();
-    const lastOrder = null;
+    const orders = await participant.getOrders({
+      where: {
+        dt_scheduled: {
+          [Op.gte]: moment().toDate(),
+        },
+        status: 'Ready To Join',
+      },
+    });
+
+    const lastOrder = await participant.getOrders({
+      through: { where: { status: { [Op.gte]: 0 } } },
+      where: {
+        dt_scheduled: {
+          [Op.lte]: moment().toDate(),
+        },
+        status: 'Feedback',
+      },
+    });
     const profile = {
       id: participant.id,
       email: participant.email,
-      lastOrder,
+      lastOrder: lastOrder.length >= 1
+        && serializeParticipantOrder(lastOrder[0], lastOrder[0].OrderParticipants),
       group: group && group.name,
       costCode: group && group.costCode,
       dietaryRequirements: participant.dietaryRequirements,
