@@ -11,6 +11,16 @@ This API is powered by the following libraries:
 - momentjs is used for sane date management
 - axios is used for downstream API requests
 
+It uses 3 downstream services:
+
+- need2feed AI - the AI powering the order size recommendation
+- Postmark - a transactional email service
+- Auth0 - for auth(n|z)
+
+## Code layout
+
+The code is split into 3 functional components (`models`, `routers` and `services`). `./models` represent database tables. `routers` are somewhat similar to `controllers` in other frameworks - they are responsible to implementing business logic, etc. `services` are wrappers around external services. In this case it's `ml` for wrapping the AI service and `email` for wrapping postmark (a transactional email service).
+
 ## Getting started
 #### Clone the repo
 ```
