@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 import { Collapse, Input, Icon, Switch } from 'antd'
@@ -100,15 +100,15 @@ export default ({ order, user }) => {
   const day = moment(dt_scheduled).format('dddd')
   const date = moment(dt_scheduled).format('hh:mma - Do MMM YYYY')
   const token = useToken()
+  const statusAsBool = status === 1 || status === 0 ? true : false
+  const [toggled, setToggled] = useState(statusAsBool)
 
   const handleToggle = (status) => {
     const newStatus = status ? 1 : -1
     updateOrderStatus(token, order.id, newStatus).then(() => {
-      window.location.reload()
+      setToggled(!toggled)
     })
   }
-
-  const statusAsBool = status === 1 || status === 0 ? true : false
 
   // Don't show the cost code container unless it exists
   let costCodeContainer = <div></div>
@@ -123,7 +123,7 @@ export default ({ order, user }) => {
           <Day>{day}</Day>
           <Date>{date}</Date>
         </DateContainer>
-        <Switch checked={statusAsBool} onChange={handleToggle} />
+        <Switch checked={toggled} onChange={handleToggle} />
       </TopRow>
 
       <OrderCollapse expandIconPosition="right">
