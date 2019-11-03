@@ -1,10 +1,11 @@
 const { Router } = require('express');
 const { celebrate, Joi } = require('celebrate');
+const ml = require('../services/ml');
 const { NotFound } = require('../errors');
 const { asyncify } = require('../utils');
 // const { requireAuth } = require('../middleware');
 const { Order, validStatus } = require('../models/order');
-const { Group } = require('../models/groups');
+const { Group, Participant } = require('../models/groups');
 
 const orderSchema = Joi.object().keys({
   menuDescription: Joi.string(),
@@ -58,6 +59,7 @@ const createOrderRouter = () => {
       if (participants) {
         order.addParticipants(participants, { through: { status: 0 } });
       }
+      await ml.createOrder(order.id, order.dt_scheduled);
       res.json(result);
     }));
 
@@ -89,7 +91,12 @@ const createOrderRouter = () => {
       if (!order) {
         throw NotFound();
       }
-      const result = await order.addParticipants(req.body.participants, { through: { status: 0 } });
+      await Promise.all(req.body.participants.map(async (p) => {
+        const participant = await Participant.findOne({ where: { id: p } });
+        await order.addParticipant(p, { through: { status: 1 } });
+        await ml.addParticipant(order.id, participant.email);
+      }));
+      const result = await order.addParticipants(req.body.participants, { through: { status: 1 } });
       res.json(result);
     }));
 

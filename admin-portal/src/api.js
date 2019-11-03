@@ -61,3 +61,7 @@ export const updateOrderFeedback = (token, orderId, feedback) => {
   const data = { feedback }
   return axios.patch(`/profile/orders/${orderId}`, data, setHeaders(token))
 }
+
+export const getFit = (orderId) => {
+  return axios.get(`http://need2feed-ai.herokuapp.com/fit/${orderId + 1000}`).then(response => response.data.fit);
+}

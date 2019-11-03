@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as moment from 'moment';
 import { useRouter } from 'useRouter';
-import { getServiceProviders, getOrder, updateOrder } from 'api';
+import { getFit, getServiceProviders, getOrder, updateOrder } from 'api';
 import { Spin, Button, Typography } from 'antd'
 import { Table, Input, TimePicker, DatePicker } from "antd";
 import { Select } from 'antd';
@@ -62,6 +62,7 @@ export const Order = () => {
   const { match } = useRouter();
   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState(null);
+  const [fit, setFit] = useState(0);
 
   const [serviceProvidersLoading, setServiceProvidersLoading] = useState(true);
   const [serviceProviders, setServiceProviders] = useState([]);
@@ -72,7 +73,12 @@ export const Order = () => {
   useEffect(() => {
     getOrder(match.params.orderId).then(order => {
       setOrder(order);
-      setLoading(false);
+      return getFit(order.id).then(fit => {
+        setFit(fit);
+        setLoading(false)
+      }).catch(e => {
+        setLoading(false);
+      });
     })
     getServiceProviders().then(providers => {
       setServiceProviders(providers);
@@ -171,6 +177,7 @@ export const Order = () => {
           <span>Recommendation based on your historical waste</span>
         </div>
         <div>
+          <Input value={fit} /> extra meals for
           <Input value={order.buffer} onChange={(e) => setOrder({ ...order, buffer: e.target.value })}/> people
         </div>
       </Section>
