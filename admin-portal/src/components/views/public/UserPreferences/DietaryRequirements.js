@@ -42,13 +42,16 @@ const TextArea = styled.textarea`
   width: 100%;
   display: border-box;
   outline: none;
-  padding: 10px;
+  padding: 15px;
   font-size: 15px;
   resize: none;
   color: ${props => props.theme.colors.primaryBlue};
   border: 2px solid ${props => props.theme.colors.primaryBlue};
   :focus {
     border: 2px solid #d972f4;
+  }
+  :placeholder {
+    color: ${props => props.theme.colors.supportingPurple};
   }
 `;
 
@@ -59,7 +62,14 @@ const UpdateButton = styled.div`
   color: white;
   text-align: center;
   font-family: "Nunito";
-`
+  transition: color 0.2s, background-color 0.2s;
+  :hover {
+    transition: color 0.2s, background-color 0.2s;
+    background-color: #fff;
+    color: ${props => props.theme.colors.primaryBlue};
+    cursor: pointer;
+  }
+`;
 
 export default ({ location, user }) => {
   const { email, dietaryRequirements } = user

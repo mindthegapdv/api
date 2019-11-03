@@ -57,6 +57,12 @@ const OptionContainer = styled(Col)`
   font-size: "15px";
   margin: 10px;
   align-items: center;
+  transition: transform 0.3s;
+  :hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
 `;
 
 const Thumb = styled.img`
@@ -71,6 +77,7 @@ const P = styled.span`
   font-size: "16px";
   color: ${props => props.theme.colors.supportingPurple};;
   text-decoration: underline;
+  cursor: pointer;
 `;
 
 const Option = ({ path, feedback, orderId, setFeedbackGiven }) => {
