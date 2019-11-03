@@ -6,6 +6,8 @@ const { createGroupRouter } = require('./routers/groups');
 const { createOrderRouter } = require('./routers/orders');
 const { createProfileRouter } = require('./routers/profile');
 
+const { createParticipantRouter } = require('./routers/participants');
+
 const PORT = process.env.PORT || 5000;
 
 const app = express();
@@ -15,6 +17,7 @@ app.use('/service-providers', createServiceProviderRouter());
 app.use('/groups', createGroupRouter());
 app.use('/orders', createOrderRouter());
 app.use('/profile', createProfileRouter());
+app.use('/participants', createParticipantRouter());
 
 app.get('/', asyncify(async (req, res) => res.json({ ok: true })));
 app.use((error, req, res, next) => { // eslint-disable-line no-unused-vars

@@ -6,6 +6,7 @@ import { Spin, Button, Typography } from 'antd'
 import { Table, Input, TimePicker, DatePicker } from "antd";
 import { Select } from 'antd';
 import { AddOrderGroup } from 'components/modals/AddOrderGroup';
+import { AddOrderParticipant } from 'components/modals/AddOrderParticipant';
 const { Option } = Select;
 const { Text, Title } = Typography;
 const { TextArea } = Input;
@@ -66,6 +67,7 @@ export const Order = () => {
   const [serviceProviders, setServiceProviders] = useState([]);
 
   const [showAddGroup, setShowAddGroup] = useState(false);
+  const [showAddParticipant, setShowAddParticipant] = useState(false);
 
   useEffect(() => {
     getOrder(match.params.orderId).then(order => {
@@ -124,6 +126,12 @@ export const Order = () => {
         onCancel={() => setShowAddGroup(false)}
         onOk={() => window.location.reload() }
       />
+      <AddOrderParticipant
+        orderId={order.id}
+        isVisible={showAddParticipant}
+        onCancel={() => setShowAddParticipant(false)}
+        onOk={() => window.location.reload() }
+      />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
         <div>
           <Title>{order.name || `Order ${order.id}`}</Title>
@@ -148,8 +156,8 @@ export const Order = () => {
           <Button onClick={() => setShowAddGroup(true)} style={{ marginRight: 24 }}>
           Add Group
         </Button>
-        <Button>
-          Add Individual
+        <Button onClick={() => setShowAddParticipant(true)}>
+          Add Individual Participant
         </Button>
       </div>
         <Table showHeader={true} dataSource={order.participants || []} columns={columns} pagination={false} />

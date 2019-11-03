@@ -53,6 +53,10 @@ export const getGroups = () => {
   return axios.get('/groups').then(response => response.data);
 }
 
+export const getParticipants = () => {
+  return axios.get('/participants').then(response => response.data);
+}
+
 export const addParticipants = (orderId, participantIds) => {
   return axios.post(`/orders/${orderId}/participants`, {
     participants: participantIds
