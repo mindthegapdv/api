@@ -1,6 +1,7 @@
 import React from 'react';
 import { Orders } from 'components/views/Orders';
 import { Order } from 'components/views/Order';
+import { Groups } from 'components/views/Groups';
 import { Route, Switch, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { useRouter } from 'useRouter';
@@ -33,7 +34,7 @@ export const Home = () => {
           <Switch>
             <Route exact path="/orders/:orderId" component={Order} />
             <Route exact path="/" component={Orders} />
-            <Route path="/groups" component={() => <div />} />
+            <Route path="/groups" component={Groups} />
           </Switch>
         </div>
       </Content>
