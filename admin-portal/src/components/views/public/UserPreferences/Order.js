@@ -78,6 +78,20 @@ const AcceptToggle = styled.div`
   background-color: blue;
 `
 
+const MenuTitle = styled.h5`
+  font-size: 16px;
+  font-weight: 700;
+  color: ${props => props.theme.colors.primaryBlue};
+  margin-bottom: 4px;
+  margin-top: 1em;
+`;
+
+const MenuItem = styled.p`
+  margin-bottom: 0px;
+  font-size: 14px;
+  color: ${props => props.theme.colors.supportingPurple};
+`;
+
 export default ({ order, user }) => {
   const { group, costCode } = user
   const { name, status } = order
@@ -100,15 +114,33 @@ export default ({ order, user }) => {
           <Day>{day}</Day>
           <Date>{date}</Date>
         </DateContainer>
-        <Switch checked={statusAsBool} onChange={handleToggle}/>
+        <Switch checked={statusAsBool} onChange={handleToggle} />
       </TopRow>
 
-      <OrderCollapse expandIconPosition='right'>
-        <Panel header={<PanelHeader text={'DV Lon Perm Lunch (Group A)'} />} key="1">
-          <div>test</div>
+      <OrderCollapse expandIconPosition="right">
+        <Panel
+          header={<PanelHeader text={"DV Lon Perm Lunch (Group A)"} />}
+          key="1"
+        >
+          {/* TODO PUT IMAGE HERE */}
+          <div>
+            <MenuTitle>Entrée</MenuTitle>
+            <MenuItem>Pumpkin soup (vegan)</MenuItem>
+            <MenuTitle>Mains</MenuTitle>
+            <MenuItem>Hallal roast chicken with vegetables</MenuItem>
+            <MenuItem>Pasta salad (vege)</MenuItem>
+            <MenuItem>Beef tacos</MenuItem>
+            <MenuTitle>Sides</MenuTitle>
+            <MenuItem>Assorted breads</MenuItem>
+            <MenuItem>Green salad</MenuItem>
+            <MenuItem>Basmati Rice</MenuItem>
+            <MenuTitle>Sweets</MenuTitle>
+            <MenuItem>Chocolate brownie</MenuItem>
+            <MenuItem>Apple tart</MenuItem>
+          </div>
         </Panel>
       </OrderCollapse>
       <Input value={`${group} / ${costCode}`} />
     </Order>
-  )
+  );
 }
