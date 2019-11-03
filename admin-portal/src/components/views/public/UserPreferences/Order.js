@@ -102,11 +102,13 @@ export default ({ order, user }) => {
   const token = useToken()
 
   const handleToggle = (status) => {
-    const newStatus = status ? 1 : 0
-    updateOrderStatus(token, order.id, newStatus)
+    const newStatus = status ? 1 : -1
+    updateOrderStatus(token, order.id, newStatus).then(() => {
+      window.location.reload()
+    })
   }
 
-  const statusAsBool = status ? true : false;
+  const statusAsBool = status === 1 || status === 0 ? true : false
 
   // Don't show the cost code container unless it exists
   let costCodeContainer = <div></div>
