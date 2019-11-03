@@ -88,7 +88,7 @@ const createProfileRouter = () => {
       orderParticipant.status = req.body.status || orderParticipant.status;
     }
     await orderParticipant.save();
-    res.status(405).json(serializeParticipantOrder(order, orderParticipant));
+    res.json(serializeParticipantOrder(order, orderParticipant));
   }));
 
   // update dietary requirements

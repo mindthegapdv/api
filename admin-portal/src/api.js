@@ -48,3 +48,13 @@ export const updateOrder = (id, payload) => {
 export const getServiceProviders = () => {
   return axios.get('/service-providers').then(response => response.data);
 }
+
+export const getGroups = () => {
+  return axios.get('/groups').then(response => response.data);
+}
+
+export const addParticipants = (orderId, participantIds) => {
+  return axios.post(`/orders/${orderId}/participants`, {
+    participants: participantIds
+  }).then(response => response.data);
+}

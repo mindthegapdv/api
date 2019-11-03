@@ -5,12 +5,12 @@ import { getServiceProviders, getOrder, updateOrder } from 'api';
 import { Spin, Button, Typography } from 'antd'
 import { Table, Input, TimePicker, DatePicker } from "antd";
 import { Select } from 'antd';
+import { AddOrderGroup } from 'components/modals/AddOrderGroup';
 const { Option } = Select;
 const { Text, Title } = Typography;
 const { TextArea } = Input;
 
 const Section = ({ children, title, style }) => (
-
   <div>
     <span style={{ display: 'block', color: '#2D9CDB', fontSize: 15, marginBottom: 9 }}>{title}</span>
     <div style={{ padding: 24, backgroundColor: '#fff', borderRadius: 8, marginBottom: 24, ...(style || {}) }}>
@@ -65,6 +65,8 @@ export const Order = () => {
   const [serviceProvidersLoading, setServiceProvidersLoading] = useState(true);
   const [serviceProviders, setServiceProviders] = useState([]);
 
+  const [showAddGroup, setShowAddGroup] = useState(false);
+
   useEffect(() => {
     getOrder(match.params.orderId).then(order => {
       setOrder(order);
@@ -101,7 +103,7 @@ export const Order = () => {
     setLoading(true);
     const { id, ...rest } = order;
     const updates= Object.keys(rest).reduce((result, key) => {
-      if (rest[key] && ['createdAt', 'updatedAt'].indexOf(key) === -1) {
+      if (rest[key] && ['createdAt', 'updatedAt', 'stats'].indexOf(key) === -1) {
         return { ...result, [key]: rest[key] };
       }
       return result;
@@ -112,8 +114,16 @@ export const Order = () => {
       setLoading(false);
     })
   }
+  const serviceProvider = serviceProviders.find(p => p.id === order.serviceProvider)
+  const costPerPerson = serviceProvider && serviceProvider.costPerPerson
   return (
     <div>
+      <AddOrderGroup
+        orderId={order.id}
+        isVisible={showAddGroup}
+        onCancel={() => setShowAddGroup(false)}
+        onOk={() => window.location.reload() }
+      />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
         <div>
           <Title>{order.name || `Order ${order.id}`}</Title>
@@ -134,6 +144,14 @@ export const Order = () => {
         </LabelledInput>
       </Section>
       <Section title="Who’s eating?">
+        <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: 24 }}>
+          <Button onClick={() => setShowAddGroup(true)} style={{ marginRight: 24 }}>
+          Add Group
+        </Button>
+        <Button>
+          Add Individual
+        </Button>
+      </div>
         <Table showHeader={true} dataSource={order.participants || []} columns={columns} pagination={false} />
       </Section>
       <Section title="Whats on the menu?">
@@ -157,7 +175,7 @@ export const Order = () => {
         </div>
         <div>
           <span style={{ display: 'block', color: '#444444', fontWeight: 'bold' }}>Estimated cost p.p.</span>
-          <span style={{ fontSize: 18, color: '#444' }}>18.00pp</span>
+          <span style={{ fontSize: 18, color: '#444' }}>{ costPerPerson && `\$${costPerPerson}pp` }</span>
         </div>
       </Section>
     </div>
