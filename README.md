@@ -41,7 +41,7 @@ $ yarn start
 This API is deployed on heroku and backed by a heroku postgres instance. Simply `git push heroku master` to deploy. After deploying, if any migrations must be applied run: `heroku run:detached node migrate`.
 
 
-## Developing
+## Contributing
 
 #### Creating migrations
 
