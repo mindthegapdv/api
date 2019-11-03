@@ -1,4 +1,4 @@
-# need2feed web app
+# need2feed API
 
 Hi, welcome to the need2feed.us API. I'm deployed at (https://api.need2feed.us)[https://api.need2feed.us]
 
@@ -61,3 +61,7 @@ $ npx sequelize-cli migration:generate --name $MIGRATION_NAME
 ```
 It will generate a new migration file in `db/migrations`. Run `yarn migrate` to apply the changes.
 
+
+#### Testing
+
+So far we have taken a risk based approach to unit testing. As there was no risk, there is no testing.
