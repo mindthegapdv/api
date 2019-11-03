@@ -59,7 +59,7 @@ const createProfileRouter = () => {
         dt_scheduled: {
           [Op.gte]: moment().toDate(),
         },
-        status: 'Ready To Join',
+        status: 'Open To Join',
       },
     });
 
