@@ -7,7 +7,7 @@ const Banner = styled(Col)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px;
+  padding: 20px !important;
   text-align: center;
   max-width: 400px;
   margin: auto;

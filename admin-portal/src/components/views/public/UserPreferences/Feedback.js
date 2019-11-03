@@ -6,50 +6,70 @@ import likePath from 'assets/images/like.png'
 import { sendLastOrderFeedback } from 'api'
 
 const FeedbackContainer = styled(Col)`
-  margin: 30px 0;
-  padding: 0 15px;
+  /* margin: 30px 0; */
+  /* padding: 0 15px; */
 `
 
 const Feedback = styled.div`
   display: flex;
+  max-width: 400px;
+  margin: auto;
+  padding: 2em;
   flex-direction: column;
   align-items: center;
   background-color: ${props => props.theme.colors.primaryBlue};
   border-radius: 6px;
+  margin: 20px !important;
 `
 
 const H3 = styled.h3`
-  font-size: 18px;
+  font-family: 'Nunito';
+  line-height: 20px;
+  font-size: 24px;
+  margin-bottom: 10px;
   color: white;
 `
 
 const Date = styled.p`
   color: white;
-  opacity: .5;
-`
+  font-family: 'Nunito';
+  font-size: 16px;
+  margin-top: 0px;
+  line-height: 20px;
+  opacity: 0.5;
+`;
 
 const Options = styled(Row)`
-  width: 100%;
-  margin: 15px;
-`
+  display: flex;
+  /* width: 100%; */
+`;
 
 const OptionContainer = styled(Col)`
   display: flex;
+  grid-template-columns: 40px 1fr;
   border: 1px solid white;
   border-radius: 6px;
-  padding: 15px;
+  padding: 10px 15px 10px 15px;
   color: white;
-`
+  font-family: "Nunito";
+  font-size: "15px";
+  margin: 10px;
+  align-items: center;
+`;
 
 const Thumb = styled.img`
-  height: 18px;
-  margin-right: 25px;
+  display: block;
+  height: 20px;
+  margin-right: 20px;
 `
 
-const P = styled.p`
-  color: white;
+const P = styled.span`
+  display: inline-block;
+  font-family: "Nunito";
+  font-size: "16px";
+  color: ${props => props.theme.colors.supportingPurple};;
   text-decoration: underline;
-`
+`;
 
 const Option = ({ path, feedback }) => {
   const token = window.localStorage.getItem('token')
@@ -59,12 +79,12 @@ const Option = ({ path, feedback }) => {
   }
 
   return (
-    <OptionContainer xs={12} onClick={handleClick}>
+    <OptionContainer onClick={handleClick}>
       <Thumb src={path} />
       {feedback === -1 ? (
-        <p>Not right</p>
+        <span>Not right</span>
       ) : (
-        <p>Great</p>
+        <span>Great</span>
       )}
     </OptionContainer>
   )
@@ -84,7 +104,7 @@ export default ({ order }) => {
           <Feedback>
             <H3>How was your meal?</H3>
             <Date>2nd November 2019</Date>
-            <Options type='flex'>
+            <Options type={'flex'}>
               <Option path={dislikePath} feedback={-1} />
               <Option path={likePath} feedback={1} />
             </Options>
