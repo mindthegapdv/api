@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { Row, Col } from 'antd'
 import dislikePath from 'assets/images/dislike.png'
 import likePath from 'assets/images/like.png'
-import { sendLastOrderFeedback } from 'api'
+import { updateOrderFeedback } from 'api'
+import { useToken } from 'hooks'
 
 const FeedbackContainer = styled.div`
   display: block;
@@ -71,11 +72,11 @@ const P = styled.span`
   text-decoration: underline;
 `;
 
-const Option = ({ path, feedback }) => {
-  const token = window.localStorage.getItem('token')
+const Option = ({ path, feedback, orderId }) => {
+  const token = useToken()
 
   const handleClick = () => {
-    sendLastOrderFeedback(token)
+    updateOrderFeedback(token, orderId, feedback)
   }
 
   return (
@@ -90,11 +91,37 @@ const Option = ({ path, feedback }) => {
   )
 }
 
+const ThankYouCard = () => (
+  <FeedbackContainer>
+    <p>Thanks</p>
+  </FeedbackContainer>
+)
+//
+// const FeedbackCard = order => {
+//   return (
+//     {order.feedback === null ? (
+//       <ThankYouCard />
+//     ) : (
+//       <FeedbackContainer xs={24}>
+//         <Feedback>
+//           <H3>How was your meal?</H3>
+//           <Date>2nd November 2019</Date>
+//           <Options type={'flex'}>
+//             <Option path={dislikePath} feedback={-1} orderId={order.id} />
+//             <Option path={likePath} feedback={1} orderId={order.id} />
+//           </Options>
+//           <P onClick={() => handleClick(order.id, 0)}>I didn't eat</P>
+//         </Feedback>
+//       </FeedbackContainer>
+//     )}
+//   )
+// }
+
 export default ({ order }) => {
-  const token = window.localStorage.getItem('token')
+  const token = useToken()
 
   const handleClick = (orderId, feedback) => {
-    sendLastOrderFeedback(token, orderId, feedback)
+    updateOrderFeedback(token, orderId, feedback)
   }
 
   return (

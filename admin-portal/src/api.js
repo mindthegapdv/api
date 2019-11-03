@@ -19,16 +19,6 @@ export const updateDietaryRequirements = (token, dietaryRequirements) => {
   return axios.patch('/profile', data, setHeaders(token))
 }
 
-export const sendLastOrderFeedback = (token, orderId, feedback) => (
-  console.log(token, orderId, feedback)
-  // axios.patch(`/profile/orders/${orderId}`, {
-  //   headers: {
-  //     'Authorization': `Bearer ${token}`
-  //   },
-  //   data: { feedback }
-  // })
-)
-
 export const getOrders = () => {
   return axios.get('/orders').then(response => response.data);
 }
@@ -64,5 +54,10 @@ export const addParticipants = (orderId, participantIds) => {
 }
 export const updateOrderStatus = (token, orderId, status) => {
   const data = { status }
+  return axios.patch(`/profile/orders/${orderId}`, data, setHeaders(token))
+}
+
+export const updateOrderFeedback = (token, orderId, feedback) => {
+  const data = { feedback }
   return axios.patch(`/profile/orders/${orderId}`, data, setHeaders(token))
 }
