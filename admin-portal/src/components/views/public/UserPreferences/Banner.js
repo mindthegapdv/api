@@ -3,14 +3,20 @@ import styled from 'styled-components'
 import { Col } from 'antd'
 import logoPath from 'assets/images/logo.png'
 
-const Banner = styled(Col)`
+const BannerWrapper = styled.div`
+  width: 100;
+  display: block;
+  margin: auto;
+  max-width: 450px;
+  /* border: 1px solid lime; */
+`;
+
+const Banner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px !important;
   text-align: center;
-  max-width: 450px;
-  margin: auto;
 `;
 
 const Logo = styled.img`
@@ -36,9 +42,14 @@ const P = styled.p`
 `;
 
 export default () => (
-  <Banner xs={24}>
-    <Logo src={logoPath} />
-    <H1>Thank you for helping reduce food waste</H1>
-    <P>Your feedback helps us accurately order and ensure great quality and sustainable food</P>
-  </Banner>
-)
+  <BannerWrapper>
+    <Banner>
+      <Logo src={logoPath} />
+      <H1>Thank you for helping reduce food waste</H1>
+      <P>
+        Your feedback helps us accurately order and ensure great quality and
+        sustainable food
+      </P>
+    </Banner>
+  </BannerWrapper>
+);

@@ -34,7 +34,7 @@ export default ({ location }) => {
   }, [])
 
   return (
-    <UserPreferences type='flex' justify='start' align='top' >
+    <UserPreferences >
       <Banner />
       <Feedback order={orders.lastOrder} />
       <Route render={props => <Orders {...props} orders={orders.nextOrders} user={user} />} />

@@ -3,12 +3,23 @@ import styled from 'styled-components'
 import { Row, Col } from 'antd'
 import logoPath from 'assets/images/logo-footer.png'
 
-const Footer = styled.div`
-  width: 100%;
+const FooterWrapper = styled.div`
+  display: flex;
+  margin: auto !important;
   background-color: ${props => props.theme.colors.lightGrey};
-  padding: 24px !important;
   font-family: "Nunito";
-`
+  padding: 24px !important;
+  justify-content: center;
+`;
+
+const Footer = styled.div`
+  max-width: 450px;
+  width: 100%;
+  padding: 24px;
+  background-color: ${props => props.theme.colors.lightGrey};
+  
+  font-family: "Nunito";
+`;
 
 const TopRow = styled(Row)`
   margin-bottom: 25px;
@@ -35,17 +46,19 @@ const Link = styled.p`
 `
 
 export default () => (
-  <Footer>
-    <TopRow type='flex' justify='space-between'>
-      <Col xs={21}>
-        <CompanyName>need2feed</CompanyName>
-        <Address>10 Hudson Yards, NY, 10001</Address>
-      </Col>
-      <Col xs={3}>
-        <Logo src={logoPath} />
-      </Col>
-    </TopRow>
-    {/* <Link>Contact us</Link>
+  <FooterWrapper>
+    <Footer>
+      <TopRow type="flex" justify="space-between">
+        <Col xs={21}>
+          <CompanyName>need2feed</CompanyName>
+          <Address>10 Hudson Yards, NY, 10001</Address>
+        </Col>
+        <Col xs={3}>
+          <Logo src={logoPath} />
+        </Col>
+      </TopRow>
+      {/* <Link>Contact us</Link>
     <Link>Data privacy</Link> */}
-  </Footer>
-)
+    </Footer>
+  </FooterWrapper>
+);
