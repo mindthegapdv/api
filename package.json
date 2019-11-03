@@ -23,6 +23,7 @@
     "eslint-plugin-import": "^2.18.2"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "DATABASE_URL='postgres://localhost/need2feed' node index.js",
+    "migrate": "DATABASE_URL='postgres://localhost/need2feed' node migrate.js"
   }
 }
