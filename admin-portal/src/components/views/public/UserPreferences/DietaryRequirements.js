@@ -6,29 +6,45 @@ import { useToken } from 'hooks'
 
 const DietaryRequirements = styled(Col)`
   background-color: ${props => props.theme.colors.primaryBlue};
-  padding: 30px 20px;
+  padding: 2em;
+  /* margin: 20px !important; */
+  max-width: 450px;
+  display: block;
+  margin: auto;
+  width: 100%;
 `
 
 const H3 = styled.h3`
+  font-family: "Nunito";
   color: white;
   font-size: 18px;
+  margin-bottom: 0px;
 `
 
 const Email = styled.p`
+  font-family: "Nunito";
   color: white;
-  opacity: .5;
-`
+  opacity: 0.5;
+  margin-bottom: 0px;
+`;
 
 const TextArea = styled.textarea`
   margin: 15px 0;
+  font-family: "Nunito";
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   width: 100%;
+  display: border-box;
   outline: none;
   padding: 10px;
-  font-size: 12px;
+  font-size: 15px;
   resize: none;
-`
+  color: ${props => props.theme.colors.primaryBlue};
+  border: 2px solid ${props => props.theme.colors.primaryBlue};
+  :focus {
+    border: 2px solid #d972f4;
+  }
+`;
 
 const UpdateButton = styled.div`
   padding: 10px;
@@ -36,6 +52,7 @@ const UpdateButton = styled.div`
   border-radius: 6px;
   color: white;
   text-align: center;
+  font-family: "Nunito";
 `
 
 export default ({ location, user }) => {
@@ -47,7 +64,7 @@ export default ({ location, user }) => {
   const handleUpdateRequirements = () => updateDietaryRequirements(token, requirements)
 
   return (
-    <DietaryRequirements xs={24}>
+    <DietaryRequirements >
       <H3>Your dietary requirements</H3>
       <Email>{email}</Email>
       <TextArea rows={5} placeholder='Vegetarian, Halal, Kosher, Allergies...' value={requirements} onChange={handleRequirementsChange}/>

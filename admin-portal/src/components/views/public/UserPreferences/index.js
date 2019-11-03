@@ -1,7 +1,7 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Route } from 'react-router-dom'
 import styled from 'styled-components'
-import { Row, Spin } from 'antd'
+import { Row } from 'antd'
 import queryString from 'query-string'
 import Banner from './Banner'
 import Feedback from './Feedback'
@@ -13,10 +13,9 @@ import { fetchUserPreferences } from 'api'
 const UserPreferences = styled(Row)`
   background-color: white;
 `
-const Loader = styled(Spin)``
 
 export default ({ location }) => {
-  const [user, setUser] = useState({ id: null, email: null, dietaryRequirements: null })
+  const [user, setUser] = useState({ id: null, email: null, dietaryRequirements: null, group: null, costCode: null })
   const [orders, setOrders] = useState({ lastOrder: null, nextOrders: [] })
 
   useEffect(() => {
@@ -27,8 +26,8 @@ export default ({ location }) => {
   useEffect(() => {
     const token = window.localStorage.getItem('token')
     if (token) {
-      fetchUserPreferences(token).then(({ id, email, dietaryRequirements, lastOrder, orders }) => {
-        setUser({ id, email, dietaryRequirements })
+      fetchUserPreferences(token).then(({ id, email, dietaryRequirements, group, costCode, lastOrder, orders }) => {
+        setUser({ id, email, dietaryRequirements, group, costCode })
         setOrders({ lastOrder: { id: 3, feedback: null }, nextOrders: orders })
       })
     }
@@ -36,17 +35,11 @@ export default ({ location }) => {
 
   return (
     <UserPreferences type='flex' justify='start' align='top' >
-      {user.id ? (
-        <Fragment>
-          <Banner />
-          <Feedback order={orders.lastOrder} />
-          <Route render={props => <Orders {...props} orders={orders.nextOrders} />} />
-          <Route render={props => <DietaryRequirements {...props} user={user} />} />
-          <Route component={Footer} />
-        </Fragment>
-      ) : (
-        <Loader />
-      )}
+      <Banner />
+      <Feedback order={orders.lastOrder} />
+      <Route render={props => <Orders {...props} orders={orders.nextOrders} user={user} />} />
+      <Route render={props => <DietaryRequirements {...props} user={user} />} />
+      <Route component={Footer} />
     </UserPreferences>
   )
 }

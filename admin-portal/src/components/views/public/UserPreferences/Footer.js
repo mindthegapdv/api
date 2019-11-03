@@ -5,7 +5,7 @@ import logoPath from 'assets/images/logo-footer.png'
 
 const Footer = styled(Col)`
   background-color: ${props => props.theme.colors.ligthGrey};
-  padding: 30px 20px;
+  padding: 24px !important;
 `
 
 const TopRow = styled(Row)`

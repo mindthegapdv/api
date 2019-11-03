@@ -16,7 +16,7 @@ export const fetchUserPreferences = token => (
 
 export const updateDietaryRequirements = (token, dietaryRequirements) => {
   const data = { dietaryRequirements }
-  return axios.patch('/profile', { data }, setHeaders(token))
+  return axios.patch('/profile', data, setHeaders(token))
 }
 
 export const sendLastOrderFeedback = (token, orderId, feedback) => (
@@ -57,4 +57,8 @@ export const addParticipants = (orderId, participantIds) => {
   return axios.post(`/orders/${orderId}/participants`, {
     participants: participantIds
   }).then(response => response.data);
+}
+export const updateOrderStatus = (token, orderId, status) => {
+  const data = { status }
+  return axios.patch(`/profile/orders/${orderId}`, data, setHeaders(token))
 }

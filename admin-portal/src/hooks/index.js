@@ -4,12 +4,12 @@ import { useRouter } from 'useRouter'
 
 export const useToken = () => {
   const [token, setToken] = useState(null)
-  const router = useRouter()
+  const { search } = useRouter().location
 
   useEffect(() => {
-    const { token } = queryString.parse(router.location.search)
+    const { token } = queryString.parse(search)
     setToken(token)
-  }, [router.location])
+  }, [search])
 
   return token
 }

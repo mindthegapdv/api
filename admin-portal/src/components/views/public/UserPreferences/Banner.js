@@ -7,8 +7,11 @@ const Banner = styled(Col)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px;
-`
+  padding: 20px !important;
+  text-align: center;
+  max-width: 400px;
+  margin: auto;
+`;
 
 const Logo = styled.img`
   height: 75px;
@@ -16,16 +19,21 @@ const Logo = styled.img`
 `
 
 const H1 = styled.h1`
-  font-size: 24px;
+  font-family: "Nunito";
+  font-size: 32px;
   text-align: center;
+  line-height: 40px;
+  color: ${props => props.theme.colors.primaryBlue};
   margin: 10px;
-`
+`;
 
 const P = styled.p`
+  font-family: "Nunito";
   font-size: 16px;
-  color: ${props => props.theme.colors.secondaryBlue};
+  line-height: 20px;
+  color: ${props => props.theme.colors.supportingPurple};
   text-align: center;
-`
+`;
 
 export default () => (
   <Banner xs={24}>
