@@ -107,6 +107,12 @@ export default ({ order, user }) => {
 
   const statusAsBool = status ? true : false;
 
+  // Don't show the cost code container unless it exists
+  let costCodeContainer = <div></div>
+  if(group){
+    costCodeContainer = <Input value={`${group} / ${costCode}`} />;
+  }
+
   return (
     <Order>
       <TopRow>
@@ -140,7 +146,7 @@ export default ({ order, user }) => {
           </div>
         </Panel>
       </OrderCollapse>
-      <Input value={`${group} / ${costCode}`} />
+      { costCodeContainer }
     </Order>
   );
 }
