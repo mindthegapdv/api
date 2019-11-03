@@ -37,7 +37,7 @@ export const Home = () => {
           </Switch>
         </div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+      <Footer style={{ textAlign: 'center' }}>need2feed ©2018</Footer>
     </Layout>
   )
 }
