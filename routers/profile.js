@@ -42,7 +42,6 @@ const serializeParticipantOrder = (order, orderParticipant) => ({
 });
 
 const getOrdersStatus = (orders) => orders
-  .filter((order) => order.OrderParticipants.status === 0)
   .map((order) => serializeParticipantOrder(order, order.OrderParticipants));
 
 const createProfileRouter = () => {

@@ -13,14 +13,14 @@ export const AddOrderParticipant = ({orderId, isVisible, onOk, onCancel}) => {
     getParticipants().then(ps => {
       setParticipants(ps);
       setLoading(false);
-    })
+    }).catch(e => console.log(e))
   }, []);
 
   const onAddParticipant = () => {
     if(!selectedParticipant) {
       return
     }
-    addParticipants(orderId, [selectedParticipant.id]).then(() => {
+    addParticipants(orderId, [selectedParticipant]).then(() => {
       onOk();
     })
   }
