@@ -3,7 +3,7 @@
     "axios": "^0.19.0",
     "celebrate": "^10.0.1",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-jwt": "^5.3.1",
     "express-jwt-authz": "^2.3.1",
     "joi": "^14.3.1",
